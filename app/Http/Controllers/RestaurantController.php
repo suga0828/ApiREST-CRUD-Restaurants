@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\restaurant;
+use App\Restaurant;
 use Illuminate\Http\Request;
 
 class RestaurantController extends Controller
@@ -14,17 +14,8 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $restaurants = Restaurant::get();
+        echo json_encode($restaurants);
     }
 
     /**
@@ -35,51 +26,42 @@ class RestaurantController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $restaurant = new Restaurant();
+        $restaurant->name = $request->input('name');
+        $restaurant->description = $request->input('description');
+        $restaurant->image = $request->input('image');
+        $restaurant->save();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\restaurant  $restaurant
-     * @return \Illuminate\Http\Response
-     */
-    public function show(restaurant $restaurant)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\restaurant  $restaurant
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(restaurant $restaurant)
-    {
-        //
+        echo json_encode($restaurant);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\restaurant  $restaurant
+     * @param  \App\Restaurant  $restaurant_id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, restaurant $restaurant)
+    public function update(Request $request, $restaurant_id)
     {
-        //
+        $restaurant = Restaurant::find($restaurant_id);
+        $restaurant->name = $request->input('name');
+        $restaurant->description = $request->input('description');
+        $restaurant->image = $request->input('image');
+        $restaurant->save();
+
+        echo json_encode($restaurant);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\restaurant  $restaurant
+     * @param  \App\Restaurant  $restaurant_id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(restaurant $restaurant)
+    public function destroy($restaurant_id)
     {
-        //
+        $restaurant = Restaurant::find($restaurant_id);
+        $restaurant->delete();
     }
 }
