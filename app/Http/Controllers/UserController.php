@@ -10,20 +10,19 @@ class UserController extends Controller
     /**
      * Get Users
      *
-     * @return [json] user object
+     * @return [json] users object
      */
-    public function users()
+    public function getUsers()
     {
-        $users = User::get();
-        return response()->json($users);
+        return response()->json( User::get() );
     }
 
     /**
      * Get the authenticated User
      *
-     * @return [json] user object
+     * @return [json] a user object
      */
-    public function user(Request $request)
+    public function getUser(Request $request)
     {
         return response()->json($request->user());
     }
