@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Restaurant;
-use Illuminate\Http\Request;
+
+use App\Http\Requests\StoreRestaurant;
+use App\Http\Requests\UpdateRestaurant;
 
 class RestaurantController extends Controller
 {
@@ -14,66 +16,63 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        $restaurants = Restaurant::get();
-        echo json_encode($restaurants);
+        return response()->json( Restaurant::all() );
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $restaurant_id
      * @return \Illuminate\Http\Response
      */
     public function show($restaurant_id)
     {
-        $restaurant = Restaurant::find($restaurant_id);
-        echo json_encode($restaurant);
+        return response()->json( Restaurant::findOrFail($restaurant_id) );
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreRestaurant  $validated_request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRestaurant $validated_request)
     {
-        $restaurant = new Restaurant();
-        $restaurant->name = $request->input('name');
-        $restaurant->description = $request->input('description');
-        $restaurant->image = $request->input('image');
-        $restaurant->save();
-
-        echo json_encode($restaurant);
+        return Restaurant::create($validated_request->all());
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Restaurant  $restaurant_id
+     * @param  UpdateRestaurant  $validated_request
+     * @param  \App\Restaurant  $restaurant
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $restaurant_id)
+    public function update(UpdateRestaurant $validated_request, $restaurant_id)
     {
-        $restaurant = Restaurant::find($restaurant_id);
-        $restaurant->name = $request->input('name');
-        $restaurant->description = $request->input('description');
-        $restaurant->image = $request->input('image');
-        $restaurant->save();
+        $response = $this->setRequestItems(Restaurant::find($restaurant_id), $validated_request);
+        /*
+            It remains to make a descriptive return
+        */
+        return response()->json($response);
+    }
 
-        echo json_encode($restaurant);
+     /**
+     * set items of request.
+     */
+    public function setRequestItems($restaurant, $request)
+    {
+        return $restaurant->fill( $request->all() )->save();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Restaurant  $restaurant_id
+     * @param  int $restaurant_id
      * @return \Illuminate\Http\Response
      */
     public function destroy($restaurant_id)
     {
-        $restaurant = Restaurant::find($restaurant_id);
-        $restaurant->delete();
+        return Restaurant::destroy($restaurant_id);
     }
 }
