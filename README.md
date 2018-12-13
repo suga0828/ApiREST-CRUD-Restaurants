@@ -1,3 +1,9 @@
+https://github.com/alexeymezenin/laravel-best-practices#contents
+https://medium.com/@kamerk22/the-smart-way-to-handle-request-validation-in-laravel-5e8886279271
+https://johnothecoder.uk/general/how-eloquent-breaks-the-single-responsibility-principle-and-why-im-okay-with-it/
+http://cristianoventura.com.br/2017/08/restful-api-with-laravel-and-angular-4/
+https://medium.com/modulr/create-api-authentication-with-passport-of-laravel-5-6-1dc2d400a7f
+
 # Laravel CRUD for restaurants and authenticated users.
 
 ## To use:
@@ -9,6 +15,7 @@
 custom .env file with your database connection (DB_DATABASE, DB_USERNAME and DB_PASSWORD)
 
 `php artisan key:generate`
+`php artisan vendor:publish --tag=passport-migrations`
 `php artisan migrate`
 `php artisan passport:install`
 `php artisan serve`
@@ -18,34 +25,27 @@ custom .env file with your database connection (DB_DATABASE, DB_USERNAME and DB_
 For restaurants:
 
 ###### CREATE
-To create a restaurant: post -> http://localhost:8000/api/restaurants
-- with headers:
-  - Content-Type: application/json
-  - X-Requested-With: XMLHttpRequest
-- and body:
-`{ "name": "name", "description": "email", "image": "image" }`
-###### READ
-- with headers:
-  - Content-Type: application/json
-  - X-Requested-With: XMLHttpRequest
+To create a restaurant: post -> http://localhost:8000/api/restaurants/create
+    
+    `{ "name": "name", "description": "email", "image": "image" }`
 
-To list restaurants: get -> http://localhost:8000/api/restaurants
-To list a restaurant: get -> //localhost:8000/api/restaurants/:id
+###### READ
+
+To list restaurants: get -> http://localhost:8000/api/restaurants/list
+To list a restaurant: get -> //localhost:8000/api/restaurants//{id}
 
 ###### UPDATE
-To edit a restaurants: put -> http://localhost:8000/api/restaurants/:id
+
+To edit a restaurants: put -> http://localhost:8000/api/restaurants/edit/{id}
     
 - with headers:
   - Content-Type: application/json
-  - X-Requested-With: XMLHttpRequest
 - and body:
-`{ "name": "name edited", "description": "email edited", "image": "image edited" }`
+    
+    `{ "name": "name edited", "description": "email edited", "image": "image edited" }`
 
 ###### DELETE:
-To delete a restaurant: delete -> http://localhost:8000/api/restaurants/:id
-- with headers:
-  - Content-Type: application/json
-  - X-Requested-With: XMLHttpRequest
+To delete a restaurant: delete -> http://localhost:8000/api/restaurants/delete/{id}
 
 # For users:
 
